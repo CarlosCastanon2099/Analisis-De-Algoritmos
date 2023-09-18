@@ -1,7 +1,9 @@
 package adoquinamiento;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Random;
+import java.awt.Color;
 
 public class Cuadricula {
 
@@ -39,6 +41,11 @@ public class Cuadricula {
     // Metodo para colocar el cuadrado especial en la cuadricula
     public void colocarCuadradoEspecial(Cuadrado cuadradoEspecial) {
         this.cuadradoEspecial = cuadradoEspecial;
+    }
+
+    // Metodo para obtener la cuadricula 
+    public Cuadrado[][] getCuadricula() {
+        return cuadricula;
     }
 
     // Metodo para colocar una figura L en la cuadricula en la posicion x,y
@@ -123,84 +130,65 @@ public class Cuadricula {
 
 
     // Algoritmo de adoquinamiento
+    // Algoritmo de adoquinamiento
     public void adoquinar() {
         // Colocar el cuadrado especial
-        colocarCuadradoEspecial(new Cuadrado(0, 0, 0));
-    
+        colocarCuadradoEspecial(new Cuadrado(0, 0, 81));
+
         // Colocar las figuras L
         for (int i = 0; i < m - 1; i++) {
             for (int j = 0; j < n - 1; j++) {
-                if (cuadricula[i][j] == null) {
+                // Caso 1) L
+                if (cuadricula[i][j] == null && cuadricula[i][j + 1] == null && cuadricula[i + 1][j] == null) {
                     // Elegir un color aleatorio
-                    int color = (int) Math.random() * 255;
-    
-                    // Colocar el cuadrado especial
-                    colocarCuadradoEspecial(new Cuadrado(i, j, color));
-                    
-                }
-                
-                // Caso 1) L 
-                if (cuadricula[i][j] == null && cuadricula[i][j+1] == null && cuadricula[i+1][j] == null) {
-                    // Elegir un color aleatorio
-                    int color = (int) Math.random() * 255;
+                    int color = (int) (Math.random() * 90);
                     Cuadrado cuadrito1 = new Cuadrado(i, j, color);
-                    Cuadrado cuadrito2 = new Cuadrado(i, j+1, color);
-                    Cuadrado cuadrito3 = new Cuadrado(i+1, j, color);
+                    Cuadrado cuadrito2 = new Cuadrado(i, j + 1, color);
+                    Cuadrado cuadrito3 = new Cuadrado(i + 1, j, color);
 
                     AdoquinUno adoquin = new AdoquinUno(cuadrito1, cuadrito2, cuadrito3);
 
                     colocarAdoquinUno(adoquin, i, j);
-    
                 }
 
                 // Caso 2) ⅃
-                if (cuadricula[i][j] == null && cuadricula[i-1][j] == null && cuadricula[i][j+1] == null) {
+                if (cuadricula[i][j] == null && cuadricula[i - 1][j] == null && cuadricula[i][j + 1] == null) {
                     // Elegir un color aleatorio
-                    int color = (int) Math.random() * 255;
+                    int color = (int) (Math.random() * 255);
                     Cuadrado cuadrito1 = new Cuadrado(i, j, color);
-                    Cuadrado cuadrito2 = new Cuadrado(i-1, j, color);
-                    Cuadrado cuadrito3 = new Cuadrado(i, j+1, color);
+                    Cuadrado cuadrito2 = new Cuadrado(i - 1, j, color);
+                    Cuadrado cuadrito3 = new Cuadrado(i, j + 1, color);
 
                     AdoquinDos adoquin = new AdoquinDos(cuadrito1, cuadrito2, cuadrito3);
 
                     colocarAdoquinDos(adoquin, i, j);
-    
                 }
-                
+
                 // Caso 3) ꓶ
-                if (cuadricula[i][j] == null && cuadricula[i][j-1] == null && cuadricula[i-1][j] == null) {
+                if (cuadricula[i][j] == null && cuadricula[i][j - 1] == null && cuadricula[i - 1][j] == null) {
                     // Elegir un color aleatorio
-                    int color = (int) Math.random() * 255;
+                    int color = (int) (Math.random() * 255);
                     Cuadrado cuadrito1 = new Cuadrado(i, j, color);
-                    Cuadrado cuadrito2 = new Cuadrado(i, j-1, color);
-                    Cuadrado cuadrito3 = new Cuadrado(i-1, j, color);
+                    Cuadrado cuadrito2 = new Cuadrado(i, j - 1, color);
+                    Cuadrado cuadrito3 = new Cuadrado(i - 1, j, color);
 
                     AdoquinTres adoquin = new AdoquinTres(cuadrito1, cuadrito2, cuadrito3);
 
                     colocarAdoquinTres(adoquin, i, j);
-    
                 }
 
                 // Caso 4) Γ
-                if (cuadricula[i][j] == null && cuadricula[i+1][j] == null && cuadricula[i][j-1] == null) {
+                if (cuadricula[i][j] == null && cuadricula[i + 1][j] == null && cuadricula[i][j - 1] == null) {
                     // Elegir un color aleatorio
-                    int color = (int) Math.random() * 255;
+                    int color = (int) (Math.random() * 255);
                     Cuadrado cuadrito1 = new Cuadrado(i, j, color);
-                    Cuadrado cuadrito2 = new Cuadrado(i+1, j, color);
-                    Cuadrado cuadrito3 = new Cuadrado(i, j-1, color);
+                    Cuadrado cuadrito2 = new Cuadrado(i + 1, j, color);
+                    Cuadrado cuadrito3 = new Cuadrado(i, j - 1, color);
 
                     AdoquinCuatro adoquin = new AdoquinCuatro(cuadrito1, cuadrito2, cuadrito3);
 
                     colocarAdoquinCuatro(adoquin, i, j);
-    
                 }
-
-
-
-                    
-                
-
-
             }
         }
     }
@@ -210,9 +198,24 @@ public class Cuadricula {
     // Metodo para obtener la imagen de la cuadricula en un momento dado
     public BufferedImage obtenerImagen(int i) {
         BufferedImage imagen = new BufferedImage(m, n, BufferedImage.TYPE_INT_RGB);
+
+        // Colores
+        Color colorCuadradoEspecial = Color.RED; // Color para el cuadrado especial
+        Color[] coloresAdoquines = {Color.BLUE, Color.GREEN, Color.ORANGE, Color.YELLOW}; // Colores para los adoquines
+        Adoquin[] adoquines = {new AdoquinUno(null, null, null), new AdoquinDos(null, null, null), new AdoquinTres(null, null, null), new AdoquinCuatro(null, null, null)};
+
         for (int x = 0; x < m; x++) {
             for (int y = 0; y < n; y++) {
-                imagen.setRGB(x, y, cuadricula[x][y].getColor());
+                int color;
+                if (cuadricula[x][y] == null) {
+                    color = Color.WHITE.getRGB(); // Color de fondo si no hay cuadrado
+                } else if (cuadricula[x][y] == cuadradoEspecial) {
+                    color = colorCuadradoEspecial.getRGB(); // Color del cuadrado especial
+                } else {
+                    int adoquinIndex = Arrays.asList(adoquines).indexOf(cuadricula[x][y]);
+                    color = coloresAdoquines[adoquinIndex].getRGB(); // Color de los adoquines
+                }
+                imagen.setRGB(x, y, color);
             }
         }
         return imagen;
