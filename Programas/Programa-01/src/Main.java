@@ -11,8 +11,6 @@ public class Main {
 
         // Verificar el tamaño de la cuadricula
         if (cuadricula.getM() == m && cuadricula.getN() == m) {
-            // Colocar el cuadrado especial
-            cuadricula.colocarCuadradoEspecial(new Cuadrado(0, 0, 0));
 
             // Llenar la cuadricula con adoquines
             cuadricula.adoquinar();
@@ -38,7 +36,7 @@ public class Main {
             System.out.print("|");
             for (int j = 0; j < n; j++) {
                 if (cuadriculaArreglo[i][j] == null) {
-                    System.out.print("0|");
+                    System.out.print("00|");
                 } else {
                     System.out.print(cuadriculaArreglo[i][j].getColor() + "|");
                 }
