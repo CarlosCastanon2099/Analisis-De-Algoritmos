@@ -47,4 +47,17 @@ public class Cuadrado {
         this.y = y;
     }
 
+    //Metodo que a partir de una posicion x,y genera un cuadrado 
+    public Cuadrado generarCuadrado(int x, int y) {
+        Cuadrado cuadrito = new Cuadrado(x, y, 0);
+        return cuadrito;
+    }
+
+    // Metodo que genera un cuadrado a partir de un arreglo [x,y]
+    public Cuadrado generarCuadradoArreglo(int[] posicion) {
+        Cuadrado cuadrito = new Cuadrado(posicion[0], posicion[1], 0);
+        return cuadrito;
+    }
+
+
 }
