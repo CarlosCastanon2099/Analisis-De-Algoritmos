@@ -136,6 +136,12 @@ public class Cuadricula {
         colocarCuadradoEspecial(cuadradoEspecial, specialX, specialY);
     
         int adoquinType = 0;
+
+        // Caso Base
+        // Colocar el primer adoquín de tal manera que cubra el cuadrado especial
+        Adoquin cuadradoEspecialAdoquin = new AdoquinUno(null, null, null);
+        
+        
     
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -143,36 +149,51 @@ public class Cuadricula {
                 if (i == specialX && j == specialY) {
                     continue;
                 }
-    
-                Cuadrado cuadrito1 = new Cuadrado(i, j, adoquinType);
-                Cuadrado cuadrito2 = new Cuadrado(i, j + 1, adoquinType);
-                Cuadrado cuadrito3 = new Cuadrado(i + 1, j, adoquinType);
-    
-                switch (adoquinType) {
-                    case 0:
-                        AdoquinUno adoquinUno = new AdoquinUno(cuadrito1, cuadrito2, cuadrito3);
-                        colocarAdoquinUno(adoquinUno, i, j);
-                        break;
-                    case 1:
-                        AdoquinDos adoquinDos = new AdoquinDos(cuadrito1, cuadrito2, cuadrito3);
-                        colocarAdoquinDos(adoquinDos, i, j);
-                        break;
-                    case 2:
-                        AdoquinTres adoquinTres = new AdoquinTres(cuadrito1, cuadrito2, cuadrito3);
-                        colocarAdoquinTres(adoquinTres, i, j);
-                        break;
-                    case 3:
-                        AdoquinCuatro adoquinCuatro = new AdoquinCuatro(cuadrito1, cuadrito2, cuadrito3);
-                        colocarAdoquinCuatro(adoquinCuatro, i, j);
-                        break;
+
+                if (puedeColocarAdoquin(specialX, adoquinType)){
+                    Cuadrado cuadrito1 = new Cuadrado(i, j, adoquinType);
+                    Cuadrado cuadrito2 = new Cuadrado(i, j , adoquinType);
+                    Cuadrado cuadrito3 = new Cuadrado(i, j, adoquinType);
+        
+                    switch (adoquinType) {
+                        case 0:
+
+                            AdoquinUno adoquinUno = new AdoquinUno(cuadrito1, cuadrito2, cuadrito3);
+                            colocarAdoquinUno(adoquinUno, i, j);
+                            break;
+                        case 1:
+                            AdoquinDos adoquinDos = new AdoquinDos(cuadrito1, cuadrito2, cuadrito3);
+                            colocarAdoquinDos(adoquinDos, i, j);
+                            break;
+                        case 2:
+                            AdoquinTres adoquinTres = new AdoquinTres(cuadrito1, cuadrito2, cuadrito3);
+                            colocarAdoquinTres(adoquinTres, i, j);
+                            break;
+                        case 3:
+                            AdoquinCuatro adoquinCuatro = new AdoquinCuatro(cuadrito1, cuadrito2, cuadrito3);
+                            colocarAdoquinCuatro(adoquinCuatro, i, j);
+                            break;
+                    }
+        
+                    adoquinType = (adoquinType + 1) % 4; // Cambiar al siguiente tipo de adoquín
                 }
     
-                adoquinType = (adoquinType + 1) % 4; // Cambiar al siguiente tipo de adoquín
+
             }
         }
     }
 
-
+    // Método para verificar si se puede colocar un adoquín en una posición
+    private boolean puedeColocarAdoquin(int x, int y) {
+        // Verificar si la posición es válida en la cuadrícula
+        if (x >= 0 && x < m - 1 && y >= 0 && y < n - 1) {
+            // Verificar si no hay otros cuadrados o adoquines en estas posiciones
+            if (cuadricula[x][y] == null && cuadricula[x][y + 1] == null && cuadricula[x + 1][y] == null) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     
 

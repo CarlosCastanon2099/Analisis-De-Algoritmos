@@ -59,5 +59,10 @@ public class Cuadrado {
         return cuadrito;
     }
 
+    // Metodo para recuperar un cuadrado
+    public Cuadrado getCuadrado(Cuadrado cuadrito) {
+        return cuadrito;
+    }
+
 
 }
