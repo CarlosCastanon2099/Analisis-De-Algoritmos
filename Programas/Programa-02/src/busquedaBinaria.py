@@ -5,7 +5,7 @@ def busqueda_binaria(lista, elemento):
     while inicio <= fin:
         medio = (inicio + fin) // 2
         if lista[medio] == elemento:
-            return medio  # Elemento encontrado, devuelve el índice.
+            return medio  # Elemento encontrado, devuelve el indice.
         elif lista[medio] < elemento:
             inicio = medio + 1
         else:
@@ -19,6 +19,6 @@ elemento_buscado = 11
 resultado = busqueda_binaria(lista_ordenada, elemento_buscado)
 
 if resultado != -1:
-    print(f"El elemento {elemento_buscado} se encuentra en el índice {resultado}.")
+    print(f"El elemento {elemento_buscado} se encuentra en el indice {resultado}.")
 else:
     print(f"El elemento {elemento_buscado} no se encuentra en la lista.")
