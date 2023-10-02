@@ -12,7 +12,7 @@ def busqueda_binaria_conHist(lista, elemento):
     inicio = 0
     fin = len(lista) - 1
     iteraciones = 0
-    finalIter = 0
+
 
     print(f"Elemento buscado: {elemento}")
     print(f"Espacio de busqueda inicial: {lista[inicio:fin + 1]}")
@@ -22,9 +22,8 @@ def busqueda_binaria_conHist(lista, elemento):
         iteraciones += 1 # Aumentamos el numero de iteraciones
 
         if lista[medio] == elemento: 
-            print(f"Elemento encontrado en el indice {medio}.")
-            finalIter = iteraciones + 1
-            print(f"Numero total de iteraciones: {finalIter}")
+            print(f"Elemento encontrado en el indice {medio + 1}.")
+            print(f"Numero total de iteraciones: {iteraciones}")
             return medio
         elif lista[medio] < elemento:
             inicio = medio + 1
@@ -34,8 +33,7 @@ def busqueda_binaria_conHist(lista, elemento):
         print(f"Iteracion {iteraciones}: Espacio de busqueda: {lista[inicio:fin + 1]}")
 
     print(f"Elemento {elemento} no encontrado.")
-    finalIter = iteraciones + 1
-    print(f"Numero total de iteraciones: {finalIter}")
+    print(f"Numero total de iteraciones: {iteraciones}")
     return -1
 
 # Metodo main
@@ -62,7 +60,7 @@ def main():
         
 
         if resultado != -1:
-            print(f"El elemento {elemento} se encuentra en el indice {resultado}.")
+            print(f"El elemento {elemento} se encuentra en el indice {resultado + 1}.")
         else:
             print(f"El elemento {elemento} no se encuentra en la lista.")
 
