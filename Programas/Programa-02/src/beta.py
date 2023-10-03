@@ -1,8 +1,9 @@
 def busqueda_binaria_indice_especial(lista):
-    print(f"Espacio de búsqueda inicial: {lista}")
+    # print(f"Espacio de búsqueda inicial: {lista}")
     def busqueda_especial(i_izq, i_der):
-        iteraciones = 0
-        print(f"Iteracion {iteraciones}: Espacio de busqueda: {lista[i_izq - 1:i_der]}")
+        # Pendiente 
+        # print(f"Iteracion {iteraciones}: Espacio de busqueda: {lista[i_izq - 1:i_der]}")
+        print(f"Espacio de busqueda: {lista[i_izq - 1:i_der]}")
         if i_izq == i_der:
             if lista[i_izq - 1] == i_izq:
                 return i_izq, 1
