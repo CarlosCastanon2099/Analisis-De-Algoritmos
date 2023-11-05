@@ -260,7 +260,31 @@ public class Sort{
     }
 
     private void quickSort(){
+      // Procedemos a implementar quick sort
+      quickSort1(0, n-1);
+    }
 
+    private void quickSort1(int low, int high){
+      if(low < high){
+        int pi = partition(low, high);
+        quickSort1(low, pi-1);
+        quickSort1(pi+1, high);
+      }
+    }
+
+    private int partition(int low, int high){
+      int pivot = numeros[high];
+      int i = low-1;
+      for(int j = low; j < high; j++){
+        if(numeros[j] < pivot){
+          i++;
+          swap(i, j);
+        }
+      }
+      swap(i+1, high);
+      if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+      iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+      return i+1;
     }
 
     private void shellSort(){
