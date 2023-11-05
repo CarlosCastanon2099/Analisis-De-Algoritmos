@@ -288,7 +288,18 @@ public class Sort{
     }
 
     private void shellSort(){
-
+      // Procedemos a implementar shell sort
+      for(int gap = n/2; gap > 0; gap /= 2){
+        for(int i = gap; i < n; i++){
+          int temp = numeros[i];
+          int j;
+          for(j = i; j >= gap && numeros[j-gap] > temp; j -= gap)
+            numeros[j] = numeros[j-gap];
+          numeros[j] = temp;
+        }
+        if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+        iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+      }
     }    
 
     public void swap(int i, int j){
