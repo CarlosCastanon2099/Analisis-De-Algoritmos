@@ -196,7 +196,18 @@ public class Sort{
     }
 
     private void insertionSort(){
-      System.out.println("Falta implementar");
+      // Procedemos a implementar insertion sort
+      for(int i = 1; i < n; i++){
+        int key = numeros[i];
+        int j = i-1;
+        while(j >= 0 && numeros[j] > key){
+          numeros[j+1] = numeros[j];
+          j--;
+        }
+        numeros[j+1] = key;
+        if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+        iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+      }
     }
 
     private void mergeSort(){
