@@ -165,7 +165,15 @@ public class Sort{
       if(metodo.equals("quick"))
         quickSort();
       if(metodo.equals("shell"))
-        shellSort();    
+        shellSort();
+      if(metodo.equals("bucket"))
+        bucketSort();
+      if(metodo.equals("radixLSD")) // Radix Sort LSD con base 10
+        radixSortLSD();    
+      if(metodo.equals("radixMSD")) // Radix Sort MSD con base 10
+        radixSortMSD();
+      if(metodo.equals("heap"))
+        heapSort();
       update();
       return null;
     }
@@ -300,7 +308,114 @@ public class Sort{
         if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
         iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
       }
-    }    
+    }
+
+    private void bucketSort(){
+      // Procedemos a implementar bucket sort
+      int max = getMax();
+      int[] bucket = new int[max+1];
+      for(int i = 0; i < n; i++)
+        bucket[numeros[i]]++;
+      int i = 0;
+      for(int j = 0; j < max+1; j++){
+        while(bucket[j] > 0){
+          numeros[i++] = j;
+          bucket[j]--;
+        }
+      }
+      if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+      iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+
+    }
+
+
+    
+    private void radixSortLSD(){
+      // Procedemos a implementar radix sort
+      int max = getMax();
+      for(int exp = 1; max/exp > 0; exp *= 10)
+        countSort(exp);
+    }
+
+    private int getMax(){
+      int max = numeros[0];
+      for(int i = 1; i < n; i++)
+        if(numeros[i] > max)
+          max = numeros[i];
+      return max;
+    }
+
+    private void countSort(int exp){
+      int[] output = new int[n];
+      int[] count = new int[10];
+      for(int i = 0; i < n; i++)
+        count[(numeros[i]/exp)%10]++;
+      for(int i = 1; i < 10; i++)
+        count[i] += count[i-1];
+      for(int i = n-1; i >= 0; i--){
+        output[count[(numeros[i]/exp)%10]-1] = numeros[i];
+        count[(numeros[i]/exp)%10]--;
+      }
+      for(int i = 0; i < n; i++)
+        numeros[i] = output[i];
+      if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+      iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+    }
+
+    public void radixSortMSD(){
+      // Procedemos a implementar radix sort MSD
+      int max = getMax();
+      for(int exp = 1; max/exp > 0; exp *= 10)
+        countSortMSD(exp, 0, n-1);
+    }
+
+    public void countSortMSD(int exp, int low, int high){
+      int[] output = new int[n];
+      int[] count = new int[10];
+      for(int i = low; i <= high; i++)
+        count[(numeros[i]/exp)%10]++;
+      for(int i = 1; i < 10; i++)
+        count[i] += count[i-1];
+      for(int i = high; i >= low; i--){
+        output[count[(numeros[i]/exp)%10]-1] = numeros[i];
+        count[(numeros[i]/exp)%10]--;
+      }
+      for(int i = low; i <= high; i++)
+        numeros[i] = output[i];
+      if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+      iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+    }
+
+    public void heapSort(){
+      // Procedemos a implementar heap sort
+      // Primero construimos el heap
+      for(int i = n/2-1; i >= 0; i--)
+        heapify(n, i);
+      // Extraemos los elementos uno por uno
+      for(int i = n-1; i >= 0; i--){
+        swap(0, i);
+        heapify(i, 0);
+      }
+
+      if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+      iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+
+    }
+
+    public void heapify(int n, int i){
+      int largest = i;
+      int l = 2*i+1;
+      int r = 2*i+2;
+      if(l < n && numeros[l] > numeros[largest])
+        largest = l;
+      if(r < n && numeros[r] > numeros[largest])
+        largest = r;
+      if(largest != i){
+        swap(i, largest);
+        heapify(n, largest);
+      }
+
+    }
 
     public void swap(int i, int j){
       int aux = numeros[i];
