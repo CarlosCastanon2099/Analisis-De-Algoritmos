@@ -182,7 +182,17 @@ public class Sort{
     }
 
     private void selectionSort(){
-      System.out.println("Falta implementar");
+      // Procedemos a implementar selection sort
+      for(int i = 0; i < n-1; i++){
+        int min = i;
+        for(int j = i+1; j < n; j++){
+          if(numeros[j] < numeros[min])
+            min = j;
+        }
+        swap(min, i);
+        if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+        iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
+      }
     }
 
     private void insertionSort(){
