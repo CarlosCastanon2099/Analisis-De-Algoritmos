@@ -211,15 +211,60 @@ public class Sort{
     }
 
     private void mergeSort(){
-      System.out.println("Falta implementar");
+      // Procedemos a implementar merge sort
+      mergeSort1(0, n-1);
+
+    }
+
+    private void mergeSort1(int l, int r){
+      if(l < r){
+        int m = (l+r)/2;
+        mergeSort1(l, m);
+        mergeSort1(m+1, r);
+        merge(l, m, r);
+      }
+    }
+
+    private void merge(int l, int m, int r){
+      int n1 = m-l+1;
+      int n2 = r-m;
+      int[] L = new int[n1];
+      int[] R = new int[n2];
+      for(int i = 0; i < n1; i++)
+        L[i] = numeros[l+i];
+      for(int i = 0; i < n2; i++)
+        R[i] = numeros[m+1+i];
+      int i = 0, j = 0, k = l;
+      while(i < n1 && j < n2){
+        if(L[i] <= R[j]){
+          numeros[k] = L[i];
+          i++;
+        }else{
+          numeros[k] = R[j];
+          j++;
+        }
+        k++;
+      }
+      while(i < n1){
+        numeros[k] = L[i];
+        i++;
+        k++;
+      }
+      while(j < n2){
+        numeros[k] = R[j];
+        j++;
+        k++;
+      }
+      if(iteracion%framerate == 0) update(); // Actualizamos la interfaz grafica solo si han pasado el numero de iteraciones deseadas
+      iteracion = (iteracion+1)%framerate; // Aumentamos el numero de iteraciones
     }
 
     private void quickSort(){
-      System.out.println("Falta implementar");
+
     }
 
     private void shellSort(){
-      System.out.println("Falta implementar");
+
     }    
 
     public void swap(int i, int j){
