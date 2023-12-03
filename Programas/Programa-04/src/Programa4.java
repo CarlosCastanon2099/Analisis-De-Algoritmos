@@ -1,11 +1,14 @@
 
 import clases.*;
+import clases.Grafica.Vertice;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.function.Function;
 import java.text.NumberFormat;
 
@@ -76,6 +79,27 @@ public class Programa4 {
         /* Imprimimos la grafica */
         System.out.println("Grafica: ");
         System.out.println(grafica);
+
+        /* Preguntamos si la grafica recibida es conexa con el metodo esConexa */
+        System.out.println("La grafica es conexa: " + grafica.esConexa());
+
+        /* Si la grafica no es conexa (es disconexa) entonces mostramos sus componentes conexas  */
+        if (!grafica.esConexa()) {
+            System.out.println("Componentes conexas: ");
+            grafica.componentesConexas();
+            
+        }
+
+        /* Si la grafica es disconexa entonces mostramos su arbol generador de peso minimo */
+        if (!grafica.esConexa()) {
+            System.out.println("Arbol generador de peso minimo: ");
+            grafica.bosquePesoMinimo();
+        }
+        
+        
+       
+
+        
         
         
     }
@@ -138,9 +162,12 @@ public class Programa4 {
     }
 
 
-    /* Como ya tenemos nuestra grafica, ahora procedemos a aplicar DFS sobre
-     * todas sus 
-       */
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,7 @@
 package clases;
 
 import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -467,4 +468,7 @@ public class Diccionario<K, V> implements Iterable<V> {
     @Override public Iterator<V> iterator() {
         return new IteradorValores();
     }
+
+    
+    
 }

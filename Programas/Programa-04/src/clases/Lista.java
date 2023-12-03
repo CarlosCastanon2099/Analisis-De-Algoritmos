@@ -662,4 +662,6 @@ public class Lista<T> implements Coleccion<T> {
     boolean busquedaLineal(Lista<T> lista, T elemento) {
         return lista.busquedaLineal(elemento, (a, b) -> a.compareTo(b));
     }
+
+
 }

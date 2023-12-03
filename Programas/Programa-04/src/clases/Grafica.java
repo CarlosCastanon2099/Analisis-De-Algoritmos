@@ -1,6 +1,9 @@
 package clases;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -12,7 +15,7 @@ public class Grafica<T> implements Coleccion<T> {
 
 
     /* Clase interna privada para iteradores. */
-    private class Iterador implements Iterator<T> {
+    public class Iterador implements Iterator<T> {
 
         /* Iterador auxiliar. */
         private Iterator<Vertice> iterador;
@@ -106,7 +109,7 @@ public class Grafica<T> implements Coleccion<T> {
     }
 
     /* Clase interna privada para vértices vecinos. */
-    private class Vecino implements VerticeGrafica<T> {
+    public class Vecino implements VerticeGrafica<T> {
 
         /* El vértice vecino. */
         public Vertice vecino;
@@ -530,6 +533,180 @@ public class Grafica<T> implements Coleccion<T> {
 
     }
 
+
+    // Metodo que devuelve LA LISTA de componentes conexas de una grafica.
+    public List<List<VerticeGrafica<T>>> componentesConexas() {
+        List<List<VerticeGrafica<T>>> componentes = new ArrayList<>();
+        paraCadaVertice(v -> setColor(v, Color.ROJO));
+
+        for (Vertice vertice : vertices) {
+            if (vertice.color == Color.ROJO) {
+                List<VerticeGrafica<T>> componente = new ArrayList<>();
+                recorre(vertice.elemento, v -> componente.add((VerticeGrafica<T>) v), new Pila<>());
+                componentes.add(componente);
+            }
+        }
+
+        paraCadaVertice(v -> setColor(v, Color.NINGUNO));
+        System.out.println(componentes);
+        return componentes;
+    }
+
+
+        /**
+     * Encuentra el árbol de peso mínimo en la componente conexa a la que pertenece el vértice inicial.
+     * @param elemento el elemento del vértice inicial.
+     * @return una nueva gráfica que representa el árbol de peso mínimo en la componente conexa.
+     * @throws NoSuchElementException si el elemento no está en la gráfica.
+     */
+    public Grafica<T> arbolPesoMinimo(T elemento) {
+        if (!contiene(elemento)) {
+            throw new NoSuchElementException();
+        }
+
+        Vertice verticeInicial = (Vertice) vertice(elemento);
+        return arbolPesoMinimoDFS(verticeInicial);
+    }
+
+    private Grafica<T> arbolPesoMinimoDFS(Vertice verticeInicial) {
+        Grafica<T> arbol = new Grafica<>();
+        Cola<Vertice> cola = new Cola<>();
+        HashSet<Vertice> visitados = new HashSet<>();
+
+        cola.mete(verticeInicial);
+
+        while (!cola.esVacia()) {
+            Vertice actual = cola.saca();
+            if (!visitados.contains(actual)) {
+                visitados.add(actual);
+                arbol.agrega(actual.elemento);
+
+                for (Vecino vecino : actual.vecinos) {
+                    cola.mete(vecino.vecino);
+                }
+            }
+        }
+
+        return arbol;
+    }
+
+
+    // A partir de una lista de componentes conexas, obtenemos el arbol de peso minimo para
+    // cada componente conexa y lo agregamos a una nueva grafica.
+    /**
+     * Encuentra el bosque de peso mínimo en la gráfica conexa.
+     * @return una nueva gráfica que representa el bosque de peso mínimo.
+     */
+    public Grafica<T> bosquePesoMinimo() {
+        Grafica<T> bosque = new Grafica<>();
+        List<List<VerticeGrafica<T>>> componentes = componentesConexas();
+
+        for (List<VerticeGrafica<T>> componente : componentes) {
+            Grafica<T> arbol = new Grafica<>();
+            for (VerticeGrafica<T> vertice : componente) {
+                arbol.agrega(vertice.get());
+            }
+
+            for (VerticeGrafica<T> vertice : componente) {
+                Vertice v = (Vertice) vertice;
+                for (Vecino vecino : v.vecinos) {
+                    if (!arbol.sonVecinos(v.elemento, vecino.vecino.elemento)) {
+                        arbol.conecta(v.elemento, vecino.vecino.elemento, vecino.peso);
+                    }
+                }
+            }
+
+            bosque = bosque.union(arbol.arbolPesoMinimo(componente.get(0).get()));
+        }
+
+        System.out.println(bosque);
+        return bosque;
+
+    }
+
+
+    // Metodo que devuelve la union de dos graficas.
+
+    public Grafica<T> union(Grafica<T> grafica) {
+        Grafica<T> union = new Grafica<>();
+
+        for (Vertice vertice : vertices) {
+            union.agrega(vertice.elemento);
+        }
+
+        for (Vertice vertice : grafica.vertices) {
+            union.agrega(vertice.elemento);
+        }
+
+        for (Vertice vertice : vertices) {
+            for (Vecino vecino : vertice.vecinos) {
+                union.conecta(vertice.elemento, vecino.vecino.elemento, vecino.peso);
+            }
+        }
+
+        for (Vertice vertice : grafica.vertices) {
+            for (Vecino vecino : vertice.vecinos) {
+                union.conecta(vertice.elemento, vecino.vecino.elemento, vecino.peso);
+            }
+        }
+
+        return union;
+    }
+
+
+
+
+    /**
+     * Regresa una gráfica que representa el subgrafo inducido por los elementos
+     * contenidos en la gráfica.
+     * @param elementos los elementos para los que queremos el subgrafo inducido.
+     * @return una gráfica que representa el subgrafo inducido por los elementos
+     *         contenidos en la gráfica.
+     */
+
+    public Grafica<T> subgrafica(List<T> elementos) {
+        // Aquí va su código.
+        Grafica<T> subgrafica = new Grafica<>();
+
+        for(T elemento : elementos){
+            if(!contiene(elemento)){
+                throw new NoSuchElementException();
+            }
+                
+            subgrafica.agrega(elemento);
+        }
+
+        for(T elemento : elementos){
+            Vertice vertice = (Vertice) vertice(elemento);
+
+            for(Vecino vecino : vertice.vecinos){
+                if(subgrafica.contiene(vecino.vecino.elemento)){
+                    subgrafica.conecta(elemento, vecino.vecino.elemento, vecino.peso);
+                }
+            }
+                
+        }
+
+        return subgrafica;
+    }
+
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Nos dice si la gráfica es vacía.
      * @return <code>true</code> si la gráfica es vacía, <code>false</code> en
@@ -798,6 +975,105 @@ public class Grafica<T> implements Coleccion<T> {
         aristas++;
 
     }
+
+    public Iterator<T> vertices() {
+        return new Iterador();
+    }
+
+    public boolean sonAdyacentes(T vertice, T verticeActual) {
+        Vertice verticePrimero = (Vertice) vertice(vertice);
+        Vertice verticeSegundo = (Vertice) vertice(verticeActual);
+
+        return verticePrimero.vecinos.contiene(verticeActual) && verticeSegundo.vecinos.contiene(vertice);
+        
+    }
+
+    public int indiceDe(T vertice) {
+        Vertice verticeAux = (Vertice) vertice(vertice);
+        return verticeAux.indice;
+    }
+
+    public T[] vecinos(T vertice) {
+        Vertice verticeAux = (Vertice) vertice(vertice);
+        T[] vecinos = (T[]) new Object[verticeAux.vecinos.getElementos()];
+
+        int i = 0;
+        for(Vecino vecino : verticeAux.vecinos){
+            vecinos[i] = vecino.vecino.elemento;
+            i++;
+        }
+
+        return vecinos;
+        
+    }
+
+    public int grado(T vertice) {
+        Vertice verticeAux = (Vertice) vertice(vertice);
+        return verticeAux.vecinos.getElementos();
+    }
+
+
+
+    
+
+    public int getIndice(T vertice) {
+        Vertice verticeAux = (Vertice) vertice(vertice);
+        return verticeAux.indice;
+    }
+
+    public void setIndice(T vertice, int indice) {
+        Vertice verticeAux = (Vertice) vertice(vertice);
+        verticeAux.indice = indice;
+    }
+
+    public void setVecino(T vertice, T vecino, double peso) {
+        Vertice verticePrimero = (Vertice) vertice(vertice);
+        Vertice verticeSegundo = (Vertice) vertice(vecino);
+
+        if(!sonVecinos(verticePrimero.elemento, verticeSegundo.elemento)){
+            throw new IllegalArgumentException();
+        }
+            
+
+        for(Vecino vecino1 : verticePrimero.vecinos){
+            if(vecino1.vecino.equals(verticeSegundo)){
+                vecino1.peso = peso;
+                break;
+            }
+        }
+            
+
+        for(Vecino vecino1 : verticeSegundo.vecinos){
+            if(vecino1.vecino.equals(verticePrimero)){
+                vecino1.peso = peso;
+                break;
+            }
+        }
+            
+    }
+
+    public void eliminaVecino(T vertice, T vecino) {
+        Vertice verticePrimero = (Vertice) vertice(vertice);
+        Vertice verticeSegundo = (Vertice) vertice(vecino);
+
+        if(!sonVecinos(verticePrimero.elemento, verticeSegundo.elemento)){
+            throw new IllegalArgumentException();
+        }
+            
+
+        verticePrimero.vecinos.elimina(vecino);
+        verticeSegundo.vecinos.elimina(vertice);
+    }
+
+
+
+
+
+    
+
+
+
+
 
     
 }

@@ -10,5 +10,9 @@ public enum Color {
     /** Rojo. */
     ROJO,
     /** Negro. */
-    NEGRO
+    NEGRO,
+    /** Verde. */
+    VERDE,
+    /** Azul. */
+    AZUL
 }
