@@ -85,14 +85,16 @@ public class Programa4 {
 
         /* Si la grafica no es conexa (es disconexa) entonces mostramos sus componentes conexas  */
         if (!grafica.esConexa()) {
+            System.out.println("\n");
             System.out.println("Componentes conexas: ");
             grafica.componentesConexas();
             
         }
 
-        /* Si la grafica es disconexa entonces mostramos su arbol generador de peso minimo */
+        /* Si la grafica es disconexa entonces mostramos su bosque generador de peso minimo */
         if (!grafica.esConexa()) {
-            System.out.println("Arbol generador de peso minimo: ");
+            System.out.println("\n");
+            System.out.println("Bosque generador de peso minimo: ");
             grafica.bosquePesoMinimo();
         }
         

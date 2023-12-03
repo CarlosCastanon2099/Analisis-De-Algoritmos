@@ -106,6 +106,11 @@ public class Grafica<T> implements Coleccion<T> {
             // Aquí va su código.
             return Double.compare(distancia, vertice.distancia);
         }
+
+        @Override
+        public String toString() {
+            return String.valueOf(elemento);
+        }
     }
 
     /* Clase interna privada para vértices vecinos. */
@@ -548,7 +553,22 @@ public class Grafica<T> implements Coleccion<T> {
         }
 
         paraCadaVertice(v -> setColor(v, Color.NINGUNO));
-        System.out.println(componentes);
+
+        // Por cada componente conexa en la lista de componentes, imprimimos sus elementos (vertices y pesos).
+        int contador = 1;
+        for (List<VerticeGrafica<T>> componente : componentes) {
+            System.out.println("\n");
+            System.out.println("Componente conexa " + contador + ": ");
+            for (VerticeGrafica<T> vertice : componente) {
+                System.out.println("Vertice:" + vertice);
+                Vertice v = (Vertice) vertice;
+                for (Vecino vecino : v.vecinos) {
+                    System.out.println("Vecino: " + vecino.vecino + " Peso: " + vecino.peso);
+                }
+            }
+            contador++;
+        }
+
         return componentes;
     }
 
@@ -737,7 +757,7 @@ public class Grafica<T> implements Coleccion<T> {
             texto += String.format("%s, ", vertice.elemento.toString());
         }
             
-        texto += "}, {";
+        texto += "}, \n  {";
         Lista<T> verticesPasados = new Lista<>();
     
         for(Vertice vertice : vertices){
