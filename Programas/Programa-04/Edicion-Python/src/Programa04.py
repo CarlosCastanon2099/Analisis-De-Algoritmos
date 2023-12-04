@@ -21,13 +21,13 @@ class Grafica:
 
     def generadorDeArbolDePesoMinimo(self):
         arbol_peso_minimo = Grafica(self.vertices)
-        conjunto_disjoint = {v: {v} for v in range(self.vertices)}
+        verticesDePesoMinimo = {v: {v} for v in range(self.vertices)}
 
         for arista in self.obtenerAristas():
             u, v, peso = arista
 
-            conjunto_u = conjunto_disjoint[u]
-            conjunto_v = conjunto_disjoint[v]
+            conjunto_u = verticesDePesoMinimo[u]
+            conjunto_v = verticesDePesoMinimo[v]
 
             if conjunto_u != conjunto_v:
                 arbol_peso_minimo.agregarArista(u, v, peso)
@@ -36,7 +36,7 @@ class Grafica:
                 conjunto_u.update(conjunto_v)
 
                 for vertex in conjunto_v:
-                    conjunto_disjoint[vertex] = conjunto_u
+                    verticesDePesoMinimo[vertex] = conjunto_u
 
         return arbol_peso_minimo
 
@@ -88,6 +88,7 @@ for arista in arbol_peso_minimo.obtenerAristas():
 
 
 # Ahora, imaginemos que tenemos una grafica disconexa con 2 o mas componentes conexas
+"""
 g2 = Grafica(9)
 g2.agregarArista(0, 1, 1)
 g2.agregarArista(1, 3, 3)
@@ -98,7 +99,7 @@ g2.agregarArista(5, 6, 4)
 g2.agregarArista(6, 7, 5)
 g2.agregarArista(7, 8, 1)
 g2.agregarArista(8, 6, 2) 
-
+"""
 
 # Y de esta grafica queremos saber, cuantas componentes conexas tiene para que de esa forma
 # A cada componente conexa le apliquemos la funcion generadorDeArbolDePesoMinimo y asi obtener
@@ -108,6 +109,7 @@ g2.agregarArista(8, 6, 2)
 # generador de conjuntos de vertices, donde cada conjunto representa una componente conexa.
 # Por ejemplo, si tenemos 3 componentes conexas, el generador nos devolvera 3 conjuntos de vertices,
 # donde cada conjunto representa una componente conexa.
+
 
 def convertir_a_networkx_graph(g):
     G = nx.Graph()
@@ -120,6 +122,32 @@ def obtenerComponentesConexas(g):
     componentes_conexas = nx.connected_components(G)
     return componentes_conexas
 
+"""
+def convertir_a_diccionario_graph(g):
+    G = {}
+    for u, v, peso in g.obtenerAristas():
+        if u not in G:
+            G[u] = []
+        G[u].append((v, peso))
+    return G
+
+def DFS(n, G, visitados):
+    component = set([n])
+    visitados.add(n)
+    for v, _ in G[n]:
+        if v not in visitados:
+            component.update(DFS(v, G, visitados))
+    return component
+
+def obtenerComponentesConexas(g):
+    G = convertir_a_diccionario_graph(g)
+    visitados = set()
+    componentes_conexas = []
+    for n in G:
+        if n not in visitados:
+            componentes_conexas.append(DFS(n, G, visitados))
+    return componentes_conexas
+"""
 
 # Ahora, para cada componente conexa, le aplicaremos la funcion generadorDeArbolDePesoMinimo
 # y asi obtener el arbol de peso minimo de cada componente conexa.
@@ -150,5 +178,63 @@ def toString(arboles_de_peso_minimo):
 
 
 # Ejemplo de uso:
-arboles_de_peso_minimo = obtenerArbolesDePesoMinimoDeCadaComponenteConexa(g2)
-toString(arboles_de_peso_minimo)
+#arboles_de_peso_minimo = obtenerArbolesDePesoMinimoDeCadaComponenteConexa(g2)
+#toString(arboles_de_peso_minimo)
+
+# Ahora, como nos interesa el leer la grafica desde un archivo de texto que nos pasen por consola
+# tenemos el siguiente metodo que primero lee el archivo de texto
+def leerArchivo(nombreArchivo):
+    archivo = open(nombreArchivo, "r")
+    lineas = archivo.readlines()
+    archivo.close()
+    return lineas
+
+# Los archivos que vamos a leer son de la forma:
+"""
+- En la primera línea tendrá todos los vértices que forman a G,
+separados por una coma (’,’).
+- En las siguientes líneas irán pares de vértices, separados por una
+coma (’,’), que indicará en las aristas de G, seguido de dos puntos
+(‘ : ’) para indicar el peso de la arista.
+Teniendo de ejemplo de esto a:
+0,1,2,3,4,5,6,7,8
+0,1:1
+1,3:3
+2,1:3
+3,2:5
+4,0:3
+5,6:4
+6,7:5
+7,8:1
+8,6:2
+"""
+
+# Ya que con el metodo anterior leemos el archivo, ahora tenemos que crear la grafica
+# con los datos que nos da el archivo de texto.
+def crearGrafica(lineas):
+    g = Grafica(len(lineas[0].split(",")))
+    for i in range(1, len(lineas)):
+        linea = lineas[i].split(":")
+        arista = linea[0].split(",")
+        g.agregarArista(int(arista[0]), int(arista[1]), int(linea[1]))
+    return g
+
+
+# Ahora declaramos el main del archivo, el cual recibe como parametro el nombre del archivo con la grafica
+# a leer
+# python Programa04.py archivo.txt
+def main():
+    lineas = leerArchivo(sys.argv[1])
+    g = crearGrafica(lineas)
+    print("Grafica Original:")
+    print("(Vertice1, Vertice2, Peso) \n")
+    print(g.obtenerAristas())
+    print()
+    arboles_de_peso_minimo = obtenerArbolesDePesoMinimoDeCadaComponenteConexa(g)
+    print("Bosque de Arboles de Peso Minimo de cada componente conexa:")
+    toString(arboles_de_peso_minimo)
+
+
+if __name__ == "__main__":
+    main()
+
