@@ -61,7 +61,7 @@ En donde:
 
 <div align="center">
 
-![Bubble](./../Media/Bubble-Vel-30.gif)
+![Bubble](./../../Media/Bubble-Vel-30.gif)
 
 </div>
 
@@ -71,7 +71,7 @@ En donde:
 
 <div align="center">
 
-![Selection](./../Media/Selection-Vel-75.gif)
+![Selection](./../../Media/Selection-Vel-75.gif)
 
 </div>
 
@@ -82,7 +82,7 @@ En donde:
 
 <div align="center">
 
-![Insertion](./../Media/Insertion-Vel-75.gif)
+![Insertion](./../../Media/Insertion-Vel-75.gif)
 
 </div>
 
@@ -93,7 +93,7 @@ En donde:
 
 <div align="center">
 
-![Merge](./../Media/Merge-Vel-100.gif)
+![Merge](./../../Media/Merge-Vel-100.gif)
 
 </div>
 
@@ -104,7 +104,7 @@ En donde:
 
 <div align="center">
 
-![Quick](./../Media/Quick-Vel-25.gif)
+![Quick](./../../Media/Quick-Vel-25.gif)
 
 </div>
 
@@ -115,7 +115,7 @@ En donde:
 
 <div align="center">
 
-![Shell](./../Media/Shell-Vel-1.gif)
+![Shell](./../../Media/Shell-Vel-1.gif)
 
 </div>
 
@@ -126,7 +126,7 @@ En donde:
 
 <div align="center">
 
-![Bucket](./../Media/Bucket-Vel-1.gif)
+![Bucket](./../../Media/Bucket-Vel-1.gif)
 
 </div>
 
@@ -137,7 +137,7 @@ En donde:
 
 <div align="center">
 
-![Heap](./../Media/Heap-Vel-1.gif)
+![Heap](./../../Media/Heap-Vel-1.gif)
 
 </div>
 
@@ -148,7 +148,7 @@ En donde:
 
 <div align="center">
 
-![RadixLSD](./../Media/RadixLSD-Vel-1.gif)
+![RadixLSD](./../../Media/RadixLSD-Vel-1.gif)
 
 </div>
 
@@ -159,6 +159,6 @@ En donde:
 
 <div align="center">
 
-![RadixMSD](./../Media/RadixMSD-Vel-1.gif)
+![RadixMSD](./../../Media/RadixMSD-Vel-1.gif)
 
 </div>
