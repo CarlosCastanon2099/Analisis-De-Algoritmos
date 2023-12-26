@@ -41,9 +41,5 @@ java main 2
 | *  | *  |
 |----|----|
 
-Salida:
-Debera generar un Gif con el rellenado paso a paso del adoquin, al gif
-lo compone en un inicio la cuadricula y uno de sus cuadrados en coloreado en
-rojo para representar al cuadrado especial (e), y los demas cuadrado siendo rellenados de 
-a poco con las figuras L (cada una de distinto color)
+
 
