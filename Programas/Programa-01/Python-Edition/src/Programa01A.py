@@ -129,7 +129,12 @@ def save_grid(grid, colors, special, filename):
     plt.close()
 
 
-save_grid(arr, color_map, (a, b), 'grid.png')
+save_grid(arr, color_map, (a, b), 'adoquinamientoFinal.png')
+
+
+# Funcion auxliar que dado un numero de entrada n, eleva 2 a la n
+def potenciadeDos(n):
+    return 2 ** n
 
 # Use of the program: python3 Programa01A.py <n> 
 # where <n> is the size of the grid (must be a power of 2)
@@ -138,7 +143,8 @@ save_grid(arr, color_map, (a, b), 'grid.png')
 if __name__ == '__main__':
     if len(sys.argv) == 2:
         size_of_grid = int(sys.argv[1])
-        if size_of_grid & (size_of_grid - 1) == 0:
+        if size_of_grid != 0:
+            size_of_grid = potenciadeDos(size_of_grid)
             a = 0
             b = 0
             arr[a][b] = -1
@@ -160,7 +166,7 @@ if __name__ == '__main__':
             plot_grid(arr, color_map, (a, b))
 
             # Save the grid as a PNG image
-            save_grid(arr, color_map, (a, b), 'grid.png')
+            save_grid(arr, color_map, (a, b), 'adoquinamientoFinal.png')
         else:
             print('Error: <n> must be a power of 2')
     else:
