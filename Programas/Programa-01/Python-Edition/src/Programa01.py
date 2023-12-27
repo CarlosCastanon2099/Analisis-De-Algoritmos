@@ -1,39 +1,88 @@
-color_actual = 0
+import sys
 
-def adoquinar(grid, top_left, bottom_right, special):
-    global color_actual
-    dx, dy = (bottom_right[0] - top_left[0]) // 2, (bottom_right[1] - top_left[1]) // 2
-    if dx == dy == 1:
-        for i in range(top_left[0], bottom_right[0]):
-            for j in range(top_left[1], bottom_right[1]):
-                if (i, j) != special:
-                    grid[i][j] = str(color_actual)
-        color_actual += 1
-    else:
-        centers = [(top_left[0]+dx-1, top_left[1]+dy-1), (top_left[0]+dx, top_left[1]+dy-1),
-                   (top_left[0]+dx-1, top_left[1]+dy), (top_left[0]+dx, top_left[1]+dy)]
-        for center in centers:
-            if center != special:
-                grid[center[0]][center[1]] = str(color_actual)
-        color_actual += 1
-        new_specials = [
-            (top_left[0] + dx - 1, top_left[1] + dy - 1),
-            (top_left[0] + dx, top_left[1] + dy - 1),
-            (top_left[0] + dx - 1, top_left[1] + dy),
-            center  # The correct new special for the bottom right quadrant
-        ]
-        adoquinar(grid, top_left, (top_left[0]+dx, top_left[1]+dy), new_specials[0])
-        adoquinar(grid, (top_left[0], top_left[1]+dy), (top_left[0]+dx, bottom_right[1]), new_specials[1])
-        adoquinar(grid, (top_left[0]+dx, top_left[1]), (bottom_right[0], top_left[1]+dy), new_specials[2])
-        adoquinar(grid, (top_left[0]+dx, top_left[1]+dy), bottom_right, new_specials[3])
+size_of_grid = 0
+b = 0
+a = 0
+cnt = 0
+arr = [[0 for i in range(128)] for j in range(128)]
+ 
+def place(x1, y1, x2, y2, x3, y3):
+    global cnt
+    cnt += 1
+    arr[x1][y1] = cnt;
+    arr[x2][y2] = cnt;
+    arr[x3][y3] = cnt;
+     
+def tile(n, x, y):
+    global cnt
+    r = 0
+    c = 0
+    if (n == 2):
+        cnt += 1
+        for i in range(n):
+            for j in range(n):
+                if(arr[x + i][y + j] == 0):
+                    arr[x + i][y + j] = cnt
+        return 0;    
+    for i in range(x, x + n):
+        for j in range(y, y + n):
+            if (arr[i][j] != 0):
+                r = i
+                c = j  
+    if (r < x + n / 2 and c < y + n / 2):
+        place(x + int(n / 2), y + int(n / 2) - 1, x + int(n / 2), y + int(n / 2), x + int(n / 2) - 1, y + int(n / 2))
+     
+    elif(r >= x + int(n / 2) and c < y + int(n / 2)):
+        place(x + int(n / 2) - 1, y + int(n / 2), x + int(n / 2), y + int(n / 2), x + int(n / 2) - 1, y + int(n / 2) - 1)
+     
+    elif(r < x + int(n / 2) and c >= y + int(n / 2)):
+        place(x + int(n / 2), y + int(n / 2) - 1, x + int(n / 2), y + int(n / 2), x + int(n / 2) - 1, y + int(n / 2) - 1)
+     
+    elif(r >= x + int(n / 2) and c >= y + int(n / 2)):
+        place(x + int(n / 2) - 1, y + int(n / 2), x + int(n / 2), y + int(n / 2) - 1, x + int(n / 2) - 1, y + int(n / 2) - 1)
+     
+    tile(int(n / 2), x, y + int(n / 2));
+    tile(int(n / 2), x, y);
+    tile(int(n / 2), x + int(n / 2), y);
+    tile(int(n / 2), x + int(n / 2), y + int(n / 2)); 
+     
+    return 0
+ 
+size_of_grid = 8
+a = 0
+b = 0
+arr[a][b] = -1
+tile(size_of_grid, 0, 0)
+ 
+for i in range(size_of_grid):
+    for j in range(size_of_grid):
+        print(arr[i][j], end=" ")
+    print()
+ 
+# The above code is contributed by rag2127
+# https://www.geeksforgeeks.org/tiling-problem-using-divide-and-conquer-algorithm/
+    
+
+
+# Ahora establecemos el metodo main
+# Para invocar el programa debemosm ejecutar: python Programa01.py <n>
+# Donde n es el tamaño de la matriz a generar y debe ser potencia de 2
 
 if __name__ == "__main__":
-    import sys
-    k = int(sys.argv[1])
-    m = 2**k
-    grid = [[' ' for _ in range(m)] for _ in range(m)]
-    special = (0, 1)
-    grid[special[0]][special[1]] = 'e'
-    adoquinar(grid, (0, 0), (m, m), special)
-    for row in grid:
-        print(''.join(row))
+    # Obtenemos el tamaño de la matriz
+    size_of_grid = int(sys.argv[1])
+    # Inicializamos la matriz
+    arr = [[0 for i in range(size_of_grid)] for j in range(size_of_grid)]
+    # Inicializamos el contador
+    cnt = 0
+    # Inicializamos el primer cuadrante
+    a = 0
+    b = 0
+    arr[a][b] = -1
+    # Invocamos el metodo tile
+    tile(size_of_grid, 0, 0)
+    # Imprimimos la matriz
+    for i in range(size_of_grid):
+        for j in range(size_of_grid):
+            print(arr[i][j], end=" ")
+        print() 
